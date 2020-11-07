@@ -1,0 +1,6 @@
+this module is responsible of handling the import of files into the django database.
+
+Here is the plan:
+- let the user import csv files,
+- render them on screen,
+- create a dedicated django class that stores them
