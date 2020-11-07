@@ -8,8 +8,10 @@
   </head>
   <body>
     <h1>Choose the file you want to upload:</h1>
-    <button type="button" name="uploader" >Upload</button>
+    <input type="file" id="uploader" onChange="uploadFile(this)">
   <script type="text/javascript" src="{% static "data_importer/js/importer.js" %}"></script>
+  <div id="data_table">
+  </div>
   </body>
 </html>
 
