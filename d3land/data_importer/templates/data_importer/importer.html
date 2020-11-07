@@ -9,8 +9,11 @@
   <body>
     <h1>Choose the file you want to upload:</h1>
     <input type="file" id="uploader" onChange="uploadFile(this)">
-  <script type="text/javascript" src="{% static "data_importer/js/importer.js" %}"></script>
+    <div id="svg">
+    </div>
   <div id="data_table">
+  <script src="https://d3js.org/d3.v6.min.js"></script>
+  <script type="text/javascript" src="{% static "data_importer/js/importer.js" %}"></script>
   </div>
   </body>
 </html>

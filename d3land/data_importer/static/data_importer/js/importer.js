@@ -40,6 +40,9 @@ function parseData(input) {
   // determine columns
   objCsv.columns = lineBreak[0].split(',');
   lineBreak.shift(); // remove column line before determining datapoint
+  lineBreak.pop(); // shift creates an empty element in the last position. pop removes it.
+  // determine dataset size
+  objCsv.size = lineBreak.length;
   objCsv.dataFile = lineBreak;
   lineBreak.forEach((res) => {
     csvData.push(res.split(','));
@@ -52,9 +55,77 @@ function uploadFile(input) {
     const reader = new FileReader();
     reader.readAsBinaryString(input.files[0]);
     reader.onload = function (e) {
-      objCsv.size = e.total;
+      // objCsv.size = e.total;
       const rawDataFile = e.target.result;
-      parseData(rawDataFile);
+      parseData(rawDataFile); // this function fills the features of objCsv
+      plotIt(objCsv.dataFile);
     };
   }
+}
+
+function determineColor(input){
+  var color = '';
+  switch(input) {
+    case "Iris-setosa":
+      color =  "green";
+    case "Iris-versicolor":
+      color =  "red";
+    case "Iris-virginica":
+      color =  "blue";
+    default:
+      color =  "black";
+  }
+  return color;
+}
+
+function plotIt(input) {
+  var width = 800;
+  var height = 600;
+
+  var shape = d3.arc({
+    innerRadius: 0,
+    outerRadius: 8,
+    startAngle: 0,
+  });
+
+  var svg = d3
+    .select('#svg')
+    .append('svg')
+    .attr("width", width)
+    .attr("height", height)
+    .style("background-color", "#eee")
+  ;
+
+  svg
+    .selectAll("circle")
+    .data(input)
+    .enter()
+    .append("circle")
+    .attr("cx", function() {return Math.random() * width;})
+    .attr("cy", function() {return Math.random() * height;})
+    .attr("r", function(d) {
+      row = d.split(',');
+      type = row[2];
+      return type;
+    })
+    .attr("fill", "white")
+    .attr("stroke-width", function(d) {
+      row = d.split(',');
+      return row[1];
+    }) 
+    .attr("stroke", function(d) {
+      row = d.split(',');
+      type = row[5];
+      switch (type) {
+      case "Iris-setosa":
+        return "red";
+      case "Iris-versicolor":
+        return "blue";
+      case "Iris-virginica":
+        return  "green";
+      default:
+        return  "black";
+      }
+    })
+    ;
 }
